@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+import backGround from './fuji.jpg';
+import cuteRabbit from'./cute-rabbit.png';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" >
+        <div style={
+          {backgroundImage: `url(${backGround})`,
+            'background-position': 'center',
+            'background-size': 'cover'
+            }
+          }>
+          <header className="App-header">
+            <h6>Hi, N...</h6>
+            <img src={cuteRabbit} className="App-logo" alt="logo" />
+            <p>
+              This is your play ground ... little rabbit.
+            </p>
+          </header>
+        </div>
     </div>
   );
 }
