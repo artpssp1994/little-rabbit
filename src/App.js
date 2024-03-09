@@ -1,25 +1,15 @@
-import backGround from './fuji.jpg';
-import cuteRabbit from'./cute-rabbit.png';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './pages/home/home';
+import ChatBox from './pages/chatBox/chatBox'
 
 function App() {
   return (
-    <div className="App" >
-        <div style={
-          {backgroundImage: `url(${backGround})`,
-            'background-position': 'center',
-            'background-size': 'cover'
-            }
-          }>
-          <header className="App-header">
-            <h6>Hi, N...</h6>
-            <img src={cuteRabbit} className="App-logo" alt="logo" />
-            <p>
-              This is your play ground ... little rabbit.
-            </p>
-          </header>
-        </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />}> </Route>
+        <Route path="/chatBox" element={<ChatBox />}> </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
