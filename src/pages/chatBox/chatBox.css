@@ -1,5 +1,12 @@
+.chat-page {
+  min-height: 100vh;
+  display: flex;
+  background-color: aliceblue
+}
+
 .chat-container {
   width: 400px;
+  height: fit-content;
   margin: 50px auto;
   background-color: #fff;
   border-radius: 8px;
@@ -63,4 +70,17 @@
   border-radius: 50%;
   cursor: pointer;
   outline: none;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.5s ease;
 }
