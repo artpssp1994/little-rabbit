@@ -34,8 +34,8 @@ function ChatBox() {
           const newMessage = { sender: 'You', text: inputMessage, time: getTime() };
           saveMessage(newMessage)
           setInputMessage('');
-          setIsShaking(true); // Start shaking effect
-          setTimeout(() => setIsShaking(false), 500); // Stop shaking after 500ms
+        //   setIsShaking(true); // Start shaking effect
+        //   setTimeout(() => setIsShaking(false), 500); // Stop shaking after 500ms
       }
   };
 
