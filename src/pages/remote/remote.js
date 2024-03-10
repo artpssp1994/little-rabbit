@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, set, get, onValue, child } from "firebase/database";
+import { getDatabase, ref, set} from "firebase/database";
+import { v4 as uuidv4 } from 'uuid';
 import './remote.css'
 
 function Remote() {
   const [isShaking, setIsShaking] = useState(false);
   const [initialTouchX, setInitialTouchX] = useState(null);
 
+  const db = getDatabase()
+
   const handleTouchStart = (event) => {
       const touch = event.touches[0];
       setInitialTouchX(touch.clientX);
   };
+
+  const updateRemoteData = () => {
+    const fbChatRef = ref(db, 'remote/chatbox/shake')
+    set(fbChatRef, uuidv4());
+  }
 
   const handleTouchEnd = (event) => {
       const touch = event.changedTouches[0];
@@ -24,7 +32,7 @@ function Remote() {
               setTimeout(() => setIsShaking(false), 500); // Stop shaking after 500ms
           }
       }
-
+      updateRemoteData();
       setInitialTouchX(null);
   };
 

@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function ChatBox() {
   const [inputMessage, setInputMessage] = useState('');
+  const [shakeId, setShakeId] = useState('');
   const [isShaking, setIsShaking] = useState(false); // State for shaking effect
 
   const db = getDatabase()
@@ -21,7 +22,7 @@ function ChatBox() {
             for (var key in val) {
                 messages.push(val[key])
             }
-            console.log(messages)
+            messages.reverse()
             setMessages(messages)
           }
     }
@@ -34,8 +35,6 @@ function ChatBox() {
           const newMessage = { sender: 'You', text: inputMessage, time: getTime() };
           saveMessage(newMessage)
           setInputMessage('');
-        //   setIsShaking(true); // Start shaking effect
-        //   setTimeout(() => setIsShaking(false), 500); // Stop shaking after 500ms
       }
   };
 
@@ -43,10 +42,27 @@ function ChatBox() {
     set(fbChatRef, message);
   }
 
+  const updateChatMessageFromFb = (newMessage) => {
+    setMessages([...messages, newMessage])
+  }
+
   onValue(fbChatRef, (snapshot) => {
     const newMessage = snapshot.val();
     if(newMessage != null) {
-        setMessages([...messages, newMessage])
+        updateChatMessageFromFb(newMessage)
+    }
+  });
+
+  const shakeChatBox = (newShakeId) => {
+    setShakeId(newShakeId)
+    setIsShaking(true); // Start shaking effect
+    setTimeout(() => setIsShaking(false), 500); // Stop shaking after 500ms
+  }
+
+  onValue(ref(db, 'remote/chatbox/shake'), (snapshot) => {
+    const newShakeId = snapshot.val()
+    if(shakeId != newShakeId) {
+        shakeChatBox(newShakeId)
     }
   });
 
