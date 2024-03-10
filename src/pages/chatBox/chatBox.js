@@ -1,21 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getDatabase, ref, set, get, onValue, child } from "firebase/database";
 import './chatBox.css';
+import { v4 as uuidv4 } from 'uuid';
 
 function ChatBox() {
-  const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isShaking, setIsShaking] = useState(false); // State for shaking effect
+
+  const db = getDatabase()
+  const msId = uuidv4()
+  const fbChatRef = ref(db, 'chatbox/messages/' + msId)
+
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const getMessage = async () => {
+        const snapshot = await get(child(ref(getDatabase()), 'chatbox/messages'))
+        if (snapshot.exists()) {
+            const val = snapshot.val()
+            const messages = []
+            for (var key in val) {
+                messages.push(val[key])
+            }
+            console.log(messages)
+            setMessages(messages)
+          }
+    }
+    getMessage()
+  }, []);
 
   const handleSubmit = (e) => {
       e.preventDefault();
       if (inputMessage.trim() !== '') {
           const newMessage = { sender: 'You', text: inputMessage, time: getTime() };
-          setMessages([...messages, newMessage]);
+          saveMessage(newMessage)
           setInputMessage('');
           setIsShaking(true); // Start shaking effect
           setTimeout(() => setIsShaking(false), 500); // Stop shaking after 500ms
       }
   };
+
+  const saveMessage = (message) => {
+    set(fbChatRef, message);
+  }
+
+  onValue(fbChatRef, (snapshot) => {
+    const newMessage = snapshot.val();
+    if(newMessage != null) {
+        setMessages([...messages, newMessage])
+    }
+  });
 
   const getTime = () => {
       const now = new Date();
