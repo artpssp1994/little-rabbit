@@ -3,6 +3,7 @@ import Home from './pages/home/home';
 import ChatBox from './pages/chatBox/chatBox'
 import { initializeApp } from 'firebase/app';
 import Remote from "./pages/remote/remote";
+import Teller from "./pages/teller/teller";
 
 function App() {
   const firebaseConfig = {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<Home />}> </Route>
         <Route path="/chatBox" element={<ChatBox />}> </Route>
         <Route path="/remote" element={<Remote />}> </Route>
+        <Route path="/teller" element={<Teller />}> </Route>
       </Routes>
     </BrowserRouter>
   );
