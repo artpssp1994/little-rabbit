@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 import backGround from '../../resources/fuji.jpg';
 import cuteRabbit from'../../resources/cute-rabbit.png';
-import space from '../../resources/space.jpg'
+import space from '../../resources/p1.png'
 
 import './teller.css';
 
@@ -36,15 +36,16 @@ const Teller = () => {
     refContainer.current && refContainer.current.appendChild( renderer.domElement );
 
 
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var geometry = new THREE.BoxGeometry(10, 20, 1);
     var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     var cube = new THREE.Mesh(geometry, material);
+    cube.position.set(0, 0, 0);
 
     scene.add(cube);
 
     // const controls = new OrbitControls(camera, renderer.domElement);
 
-    for(let i=0; i< 700; i++) {
+    for(let i=0; i< 200; i++) {
       scene.add(addStar());
     }
 
@@ -62,7 +63,7 @@ const Teller = () => {
 
     const centerPosition = new THREE.Vector3(0, 0, 0);
     // Set initial camera position
-    const cameraDistance = 50; // Distance from the center point
+    const cameraDistance = 40; // Distance from the center point
     camera.position.set(0, 0, cameraDistance);
 
     // Set up animation parameters
@@ -79,7 +80,7 @@ const Teller = () => {
     
     var animate = function () {
       requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
+      // cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;      
 
       // controls.update();
@@ -91,7 +92,17 @@ const Teller = () => {
     animate();
   }, []);
   return (
-    <div ref={refContainer}></div>
+    <div className={'page'}>
+      <div ref={refContainer} className={'tree-container'}></div>
+      <div className={'header'}>
+        <div className={'header-text'}>เช็คดวงรายวัน</div>
+      </div>
+      <div className={'body'}>
+      </div>
+      <div className={'tail'}>
+      </div>
+    </div>
+ 
 
   );
 }
