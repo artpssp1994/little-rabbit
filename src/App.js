@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/home/home';
 import ChatBox from './pages/chatBox/chatBox'
+import ResumeReview from './pages/resumeReview/resumeReview'
 import { initializeApp } from 'firebase/app';
 import Remote from "./pages/remote/remote";
 import Teller from "./pages/teller/teller";
@@ -27,6 +28,7 @@ function App() {
         <Route path="/chatBox" element={<ChatBox />}> </Route>
         <Route path="/remote" element={<Remote />}> </Route>
         <Route path="/teller" element={<Teller />}> </Route>
+        <Route path="/resumeReview" element={<ResumeReview />}> </Route>
       </Routes>
     </BrowserRouter>
   );
