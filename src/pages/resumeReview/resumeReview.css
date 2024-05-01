@@ -1,10 +1,10 @@
-.chat-page {
+.page {
   min-height: 100vh;
   display: flex;
   background-color: aliceblue
 }
 
-.chat-container {
+.container {
   width: 400px;
   height: fit-content;
   margin: 50px auto;
@@ -13,7 +13,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.chat-header {
+.header {
   padding: 15px;
   background-color: #007bff;
   color: #fff;
@@ -21,14 +21,14 @@
   border-top-right-radius: 8px;
 }
 
-.chat-body {
+.body {
   padding: 15px;
   min-height: 300px;
   max-height: 400px;
   overflow-y: auto;
 }
 
-.chat-message {
+.message {
   margin-bottom: 15px;
 }
 
@@ -48,7 +48,7 @@
   color: #aaa;
 }
 
-.chat-footer {
+.footer {
   padding: 15px;
   border-top: 1px solid #ddd;
 }

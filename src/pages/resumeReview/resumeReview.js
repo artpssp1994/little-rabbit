@@ -1,102 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, set, get, onValue, child } from "firebase/database";
 import './resumeReview.css';
-import { v4 as uuidv4 } from 'uuid';
+import * as pdfjs from 'pdfjs-dist/build/pdf.min.mjs'
+await import('pdfjs-dist/build/pdf.worker.mjs')
+
 
 function ResumeReview() {
-  const [inputMessage, setInputMessage] = useState('');
-  const [shakeId, setShakeId] = useState('');
-  const [isShaking, setIsShaking] = useState(false); // State for shaking effect
 
-  const db = getDatabase()
-  const msId = uuidv4()
-  const fbChatRef = ref(db, 'chatbox/messages/' + msId)
+  const [pdfText, setPdfText] = useState('');
 
-  const [messages, setMessages] = useState([]);
-  useEffect(() => {
-    const getMessage = async () => {
-        const snapshot = await get(child(ref(getDatabase()), 'chatbox/messages'))
-        if (snapshot.exists()) {
-            const val = snapshot.val()
-            const messages = []
-            for (var key in val) {
-                messages.push(val[key])
-            }
-            messages.reverse()
-            setMessages(messages)
-          }
+  const readPdfText = async (file) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const arrayBuffer = reader.result;
+        const pdf = await pdfjs.getDocument(arrayBuffer).promise;
+        let text = '';
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          console.log(page)
+          const content = await page.getTextContent();
+          content.items.forEach((item) => {
+            text += item.str + ' ';
+          });
+        }
+        setPdfText(text);
+      };
+      reader.readAsArrayBuffer(file);
+    } catch (error) {
+      console.error('Error reading PDF:', error);
     }
-    getMessage()
-  }, []);
-
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      if (inputMessage.trim() !== '') {
-          const newMessage = { sender: 'You', text: inputMessage, time: getTime() };
-          saveMessage(newMessage)
-          setInputMessage('');
-      }
   };
 
-  const saveMessage = (message) => {
-    set(fbChatRef, message);
-  }
-
-  const updateChatMessageFromFb = (newMessage) => {
-    setMessages([...messages, newMessage])
-  }
-
-  onValue(fbChatRef, (snapshot) => {
-    const newMessage = snapshot.val();
-    if(newMessage != null) {
-        updateChatMessageFromFb(newMessage)
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      readPdfText(file);
     }
-  });
-
-  const shakeChatBox = (newShakeId) => {
-    setShakeId(newShakeId)
-    setIsShaking(true); // Start shaking effect
-    setTimeout(() => setIsShaking(false), 500); // Stop shaking after 500ms
-  }
-
-  onValue(ref(db, 'remote/chatbox/shake'), (snapshot) => {
-    const newShakeId = snapshot.val()
-    if(shakeId != newShakeId) {
-        shakeChatBox(newShakeId)
-    }
-  });
-
-  const getTime = () => {
-      const now = new Date();
-      return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
   return (
-      <div className={'chat-page'}>
-        <div className={`chat-container ${isShaking ? 'shake' : ''}`}>
-            <div className="chat-header">
-                <h3>Chat Box</h3>
+      <div className={'page'}>
+        <div className={``}>
+            <div className="header">
+                <h3>Upload your resume</h3>
             </div>
-            <div className="chat-body">
-                {messages.map((message, index) => (
-                    <div key={index} className="chat-message">
-                        <span className="message-sender">{message.sender}: </span>
-                        <span className="message-text">{message.text}</span>
-                        <span className="message-time">{message.time}</span>
-                    </div>
-                ))}
+            <div className="body">
+              <input type="file" accept=".pdf" onChange={handleFileChange} />
+              <div>{pdfText}</div>
             </div>
-            <div className="chat-footer">
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        className="input-message"
-                        placeholder="Type a message..."
-                        value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                    />
-                    <button type="submit" className="btn-send">▶</button>
-                </form>
+            <div className="footer">
+              
             </div>
         </div>
       </div>
