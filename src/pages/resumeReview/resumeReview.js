@@ -7,17 +7,18 @@ await import('pdfjs-dist/build/pdf.worker.mjs')
 function ResumeReview() {
 
   const [pdfText, setPdfText] = useState('');
+  const [pdfUrl, setPdfUrl] = useState('');
 
   const readPdfText = async (file) => {
     try {
       const reader = new FileReader();
       reader.onload = async () => {
         const arrayBuffer = reader.result;
+
         const pdf = await pdfjs.getDocument(arrayBuffer).promise;
         let text = '';
         for (let i = 1; i <= pdf.numPages; i++) {
           const page = await pdf.getPage(i);
-          console.log(page)
           const content = await page.getTextContent();
           content.items.forEach((item) => {
             text += item.str + ' ';
@@ -34,25 +35,37 @@ function ResumeReview() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setPdfUrl(fileReader.result);
+      };
+      fileReader.readAsDataURL(file);
       readPdfText(file);
     }
   };
 
   return (
-      <div className={'page'}>
-        <div className={``}>
-            <div className="header">
-                <h3>Upload your resume</h3>
-            </div>
-            <div className="body">
-              <input type="file" accept=".pdf" onChange={handleFileChange} />
-              <div>{pdfText}</div>
-            </div>
-            <div className="footer">
-              
-            </div>
+    <div className={'page'}>
+      <div className={``}>
+        <div className="header">
+          <h3>Upload your resume</h3>
+        </div>
+        <div className="body">
+          <input type="file" accept="application/pdf" onChange={handleFileChange} />
+          <div>{pdfText}</div>
+        </div>
+        <div className="footer">
+          {pdfUrl && (
+            <embed
+              src={pdfUrl}
+              type="application/pdf"
+              width="100%"
+              height="600px"
+            />
+          )}
         </div>
       </div>
+    </div>
   );
 }
 
