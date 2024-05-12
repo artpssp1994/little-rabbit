@@ -1,7 +1,7 @@
 .page {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
-  background-color: aliceblue
+  flex-direction: column;
 }
 
 .container {
@@ -17,15 +17,15 @@
   padding: 15px;
   background-color: #007bff;
   color: #fff;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 }
 
 .body {
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  /* padding: 15px;
   min-height: 300px;
   max-height: 400px;
-  overflow-y: auto;
+  overflow-y: auto; */
 }
 
 .message {
@@ -83,4 +83,17 @@
 
 .shake {
   animation: shake 0.5s ease;
+}
+
+.reviewContainer {
+  display: flex;
+  width: 100%;
+}
+
+.markdownContainer {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  color: darkslategrey;
 }

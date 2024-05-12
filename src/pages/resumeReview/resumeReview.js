@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './resumeReview.css';
+import { geminiGenerate } from '../../utils/ai/gemini/gemini.js' 
+import ReactMarkdown from 'react-markdown';
 import * as pdfjs from 'pdfjs-dist/build/pdf.min.mjs'
 await import('pdfjs-dist/build/pdf.worker.mjs')
 
@@ -24,7 +26,8 @@ function ResumeReview() {
             text += item.str + ' ';
           });
         }
-        setPdfText(text);
+        const reviewText = await geminiGenerate(text)
+        setPdfText(reviewText);
       };
       reader.readAsArrayBuffer(file);
     } catch (error) {
@@ -52,7 +55,11 @@ function ResumeReview() {
         </div>
         <div className="body">
           <input type="file" accept="application/pdf" onChange={handleFileChange} />
-          <div>{pdfText}</div>
+          <div className='reviewContainer'>
+            <div className='markdownContainer'>
+              <ReactMarkdown>{pdfText}</ReactMarkdown>
+            </div>
+          </div>
         </div>
         <div className="footer">
           {pdfUrl && (
