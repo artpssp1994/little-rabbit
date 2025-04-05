@@ -5,6 +5,7 @@ import ResumeReview from './pages/resumeReview/resumeReview'
 import { initializeApp } from 'firebase/app';
 import Remote from "./pages/remote/remote";
 import Teller from "./pages/teller/teller";
+import ArduinoCommunication from "./pages/arduinoCommunication/ArduinoCommunication"
 
 function App() {
   const firebaseConfig = {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/remote" element={<Remote />}> </Route>
         <Route path="/teller" element={<Teller />}> </Route>
         <Route path="/resumeReview" element={<ResumeReview />}> </Route>
+        <Route path="/arduinoCommunication" element={<ArduinoCommunication />}> </Route>
       </Routes>
     </BrowserRouter>
   );
