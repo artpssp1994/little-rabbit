@@ -6,6 +6,7 @@ const BluetoothCommunication = () => {
   const [server, setServer] = useState(null);
   const [characteristic, setCharacteristic] = useState(null);
   const [activeOrder, setActiveOrder] = useState([1, 2, 3 , 4, 5]);
+  const [loopDuration, setloopDuration] = useState(1);
   const [dataToSend, setDataToSend] = useState('');
   const [receivedData, setReceivedData] = useState('');
 
@@ -96,20 +97,40 @@ const BluetoothCommunication = () => {
             />
         )
     }
-    return  (<div className='coil-config-wrapper'>{configs}</div>)
+    return  (
+        <div className='coil-config-wrapper-with-header'>
+            <text className='coil-config-header'>Set active order</text>
+            <div className='coil-config-wrapper'>
+                {configs}
+            </div>
+        </div>
+        )
+  }
+
+  const renderDurationConfig = () => {
+    return  (
+        <div className='duration-config-wrapper-with-header'>
+            <text>Loop duration</text>
+            <div className='duration-textbox-wrapper'>
+                <textarea
+                    className="square-textbox"
+                    placeholder={loopDuration}
+                    value={loopDuration}
+                    onChange={(e) => setloopDuration(e.target.value)}
+                />
+            </div>
+            <text>second</text>
+        </div>
+    )
   }
 
   return (
     <div className="bluetooth-communication">
-      <h1>Bluetooth Communication</h1>
-      {renderTapeCoil()}
-      {renderConfigCoil()}
-      <textarea
-        className="data-input"
-        placeholder="Enter data to send"
-        value={dataToSend}
-        onChange={(e) => setDataToSend(e.target.value)}
-      />
+        <h1>Flexitape Bluetooth Communication</h1>
+        {renderTapeCoil()}
+        {renderConfigCoil()}
+        {renderDurationConfig()}
+
       <div className="button-group">
         <button className="connect-button" onClick={connectToBluetooth}>
           Connect

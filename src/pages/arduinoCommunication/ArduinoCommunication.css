@@ -1,9 +1,11 @@
+
+
 .bluetooth-communication {
   font-family: 'Roboto', sans-serif;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   padding: 20px;
-  width: 80%;
+  width: 70%;
   text-align: center;
   margin: 20px auto;
   display: flex;
@@ -29,16 +31,20 @@ h1 {
 }
 
 .button-group {
+  width: 80%;
   display: flex;
+  margin: auto;
   justify-content: space-between;
   margin-top: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .connect-button,
 .send-button,
 .disconnect-button {
   flex: 1;
-  margin: 0 5px;
+  margin: 5px;
   padding: 10px 15px;
   font-size: 16px;
   font-weight: bold;
@@ -68,6 +74,8 @@ h1 {
 .received-data {
   margin-top: 20px;
   text-align: left;
+  width: 80%;
+  margin: auto;
 }
 
 .received-data h2 {
@@ -116,9 +124,48 @@ h1 {
   text-align: center;
 }
 
-.coil-config-wrapper {
+.coil-config-wrapper-with-header {
+  margin: auto;
+  width: 80%;
+  height: 100px;
+  max-width: 600px;
+  aspect-ratio: 3 / 1;
   display: flex;
-  margin: 20px auto;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.coil-config-header {
+  text-align: left;
+}
+
+.coil-config-wrapper {
+  margin: auto;
+  width: 80%;
+  height: 100px;
+  max-width: 600px;
+  aspect-ratio: 3 / 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.duration-config-wrapper-with-header {
+  margin: auto;
+  width: 80%;
+  height: 100px;
+  max-width: 600px;
+  aspect-ratio: 3 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.duration-textbox-wrapper {
+  padding: 0px 10px;
 }
 
 .square-textbox {
@@ -133,5 +180,5 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto 20px;
 }
+
