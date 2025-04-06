@@ -1,37 +1,59 @@
 import React, { useState } from 'react';
 import './ArduinoCommunication.css';
 
-const ArduinoCommunication = () => {
-  const [port, setPort] = useState(null);
-  const [writer, setWriter] = useState(null);
+const BluetoothCommunication = () => {
+  const [device, setDevice] = useState(null);
+  const [server, setServer] = useState(null);
+  const [characteristic, setCharacteristic] = useState(null);
   const [dataToSend, setDataToSend] = useState('');
+  const [receivedData, setReceivedData] = useState('');
 
-  const connectToArduino = async () => {
+  const connectToBluetooth = async () => {
     try {
-      const selectedPort = await navigator.serial.requestPort();
-      await selectedPort.open({ baudRate: 9600 });
-
-      const textEncoder = new TextEncoderStream();
-      textEncoder.readable.pipeTo(selectedPort.writable);
-      const writableStream = textEncoder.writable.getWriter();
-
-      setPort(selectedPort);
-      setWriter(writableStream);
-
-      alert('Connected to Arduino!');
+      // Request a Bluetooth device
+      const selectedDevice = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: ['12345678-1234-5678-1234-56789abcdef0'], // Replace with your service UUID
+      });
+  
+      // Connect to the GATT server
+      const gattServer = await selectedDevice.gatt.connect();
+  
+      // Get the primary service
+      const service = await gattServer.getPrimaryService('12345678-1234-5678-1234-56789abcdef0'); // Replace with your service UUID
+  
+      // Get the characteristic for communication
+      const char = await service.getCharacteristic('87654321-4321-8765-4321-abcdef012345'); // Replace with your characteristic UUID
+  
+      // Set up notifications for receiving data
+      char.startNotifications();
+      char.addEventListener('characteristicvaluechanged', handleReceivedData);
+  
+      setDevice(selectedDevice);
+      setServer(gattServer);
+      setCharacteristic(char);
+  
+      alert('Connected to Seeeduino BLE device!');
     } catch (error) {
-      console.error('Error connecting to Arduino:', error);
-      alert('Failed to connect to Arduino.');
+      console.error('Error connecting to Bluetooth device:', error);
+      alert('Failed to connect to Bluetooth device.');
     }
+  };
+
+  const handleReceivedData = (event) => {
+    const value = new TextDecoder().decode(event.target.value);
+    setReceivedData((prevData) => prevData + value);
   };
 
   const sendData = async () => {
     try {
-      if (writer && dataToSend) {
-        await writer.write(dataToSend + '\n');
-        alert('Data sent to Arduino!');
+      if (characteristic && dataToSend) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(dataToSend);
+        await characteristic.writeValue(data);
+        alert('Data sent to Bluetooth device!');
       } else {
-        alert('Please connect to Arduino and enter data to send.');
+        alert('Please connect to a Bluetooth device and enter data to send.');
       }
     } catch (error) {
       console.error('Error sending data:', error);
@@ -39,25 +61,19 @@ const ArduinoCommunication = () => {
     }
   };
 
-  const handleUnload = async () => {
-    if (writer) {
-      await writer.close();
-    }
-    if (port) {
-      await port.close();
+  const disconnectBluetooth = async () => {
+    if (device && server) {
+      server.disconnect();
+      setDevice(null);
+      setServer(null);
+      setCharacteristic(null);
+      alert('Disconnected from Bluetooth device.');
     }
   };
 
-  React.useEffect(() => {
-    window.addEventListener('unload', handleUnload);
-    return () => {
-      window.removeEventListener('unload', handleUnload);
-    };
-  }, [writer, port]);
-
   return (
-    <div className="arduino-communication">
-      <h1>Send Data to Arduino</h1>
+    <div className="bluetooth-communication">
+      <h1>Bluetooth Communication</h1>
       <textarea
         className="data-input"
         placeholder="Enter data to send"
@@ -65,18 +81,22 @@ const ArduinoCommunication = () => {
         onChange={(e) => setDataToSend(e.target.value)}
       />
       <div className="button-group">
-        <button className="connect-button" onClick={connectToArduino}>
+        <button className="connect-button" onClick={connectToBluetooth}>
           Connect
         </button>
         <button className="send-button" onClick={sendData}>
           Send
         </button>
+        <button className="disconnect-button" onClick={disconnectBluetooth}>
+          Disconnect
+        </button>
       </div>
-      <div className="footer">
-        <p>Ensure your Arduino is connected via USB.</p>
+      <div className="received-data">
+        <h2>Received Data:</h2>
+        <p>{receivedData || 'No data received yet.'}</p>
       </div>
     </div>
   );
 };
 
-export default ArduinoCommunication;
+export default BluetoothCommunication;
