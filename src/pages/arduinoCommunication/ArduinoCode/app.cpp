@@ -1,54 +1,56 @@
-#include <ArduinoBLE.h>
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
+#include <BLE2902.h>
+BLECharacteristic *pCharacteristic;
+bool deviceConnected = false;
+#define SERVICE_UUID        "12345678-1234-5678-1234-56789abcdef0"
+#define CHARACTERISTIC_UUID "87654321-4321-8765-4321-abcdef012345"
 
-// Define a BLE service and characteristic (Can replace)
-BLEService bleService("12345678-1234-5678-1234-56789abcdef0");
-BLECharacteristic bleCharacteristic("87654321-4321-8765-4321-abcdef012345", BLERead | BLEWrite, 512);
 
-void setup() {
-  Serial.begin(9600);
-  while (!Serial);
-
-  // Initialize BLE
-  if (!BLE.begin()) {
-    Serial.println("Failed to initialize BLE!");
-    while (1);
+class MyServerCallbacks : public BLEServerCallbacks {
+  void onConnect(BLEServer* pServer) {
+    deviceConnected = true;
+    Serial.println("Device connected");
   }
+  void onDisconnect(BLEServer* pServer) {
+    deviceConnected = false;
+    Serial.println("Device disconnected");
+  }
+};
 
-  Serial.println("BLE initialized.");
-
-  // Set device name
-  BLE.setLocalName("Seeeduino Little Rabbit BLE");
-  BLE.setAdvertisedService(bleService);
-
-  // Add the characteristic to the service
-  bleService.addCharacteristic(bleCharacteristic);
-  BLE.addService(bleService);
-
-  // Start advertising
-  BLE.advertise();
-  Serial.println("BLE advertising...");
-}
-
-void loop() {
-  // Listen for BLE connections
-  BLEDevice central = BLE.central();
-
-  if (central) {
-    Serial.print("Connected to central: ");
-    Serial.println(central.address());
-
-    // While connected, handle BLE communication
-    while (central.connected()) {
-      if (bleCharacteristic.written()) {
-        String receivedData = bleCharacteristic.value();
-        Serial.print("Received: ");
-        Serial.println(receivedData);
-
-        // Echo the data back to the central device
-        bleCharacteristic.writeValue("Echo: " + receivedData);
-      }
+class MyCharacteristicCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue();
+    if (value.length() > 0) {
+      Serial.print("Received: ");
+      Serial.println(value.c_str());
+      String echo = "Echo: " + value;
+      pCharacteristic->setValue(echo.c_str());
     }
-
-    Serial.println("Central disconnected.");
   }
+};
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Starting BLE on XIAO C3...");
+  BLEDevice::init("XIAO C3 BLE");
+  BLEServer *pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+  BLEService *pService = pServer->createService(SERVICE_UUID);
+  pCharacteristic = pService->createCharacteristic(
+    CHARACTERISTIC_UUID,
+    BLECharacteristic::PROPERTY_READ |
+    BLECharacteristic::PROPERTY_WRITE
+  );
+  pCharacteristic->setCallbacks(new MyCharacteristicCallbacks());
+  pCharacteristic->setValue("Hello from XIAO C3!");
+  pCharacteristic->addDescriptor(new BLE2902());
+  pService->start();
+  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->start();
+  Serial.println("BLE service started and advertising...");
+}
+void loop() {
+  // Nothing needed here for now
 }

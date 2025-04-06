@@ -1,84 +1,137 @@
 .bluetooth-communication {
-    font-family: 'Roboto', sans-serif;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 400px;
-    text-align: center;
-    margin: 20px auto;
-  }
-  
-  h1 {
-    color: #333333;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .data-input {
-    width: 100%;
-    height: 120px;
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    resize: none;
-  }
-  
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .connect-button,
-  .send-button,
-  .disconnect-button {
-    flex: 1;
-    margin: 0 5px;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .connect-button:hover,
-  .send-button:hover,
-  .disconnect-button:hover {
-    background-color: #0056b3;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  }
-  
-  .disconnect-button {
-    background-color: #dc3545;
-  }
-  
-  .disconnect-button:hover {
-    background-color: #a71d2a;
-  }
-  
-  .received-data {
-    margin-top: 20px;
-    text-align: left;
-  }
-  
-  .received-data h2 {
-    font-size: 18px;
-    color: #333333;
-  }
-  
-  .received-data p {
-    font-size: 16px;
-    color: #666666;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-  }
+  font-family: 'Roboto', sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 80%;
+  text-align: center;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  color: #333333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.data-input {
+  width: 100%;
+  height: 120px;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  resize: none;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.connect-button,
+.send-button,
+.disconnect-button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.connect-button:hover,
+.send-button:hover,
+.disconnect-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.disconnect-button {
+  background-color: #dc3545;
+}
+
+.disconnect-button:hover {
+  background-color: #a71d2a;
+}
+
+.received-data {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.received-data h2 {
+  font-size: 18px;
+  color: #333333;
+}
+
+.received-data p {
+  font-size: 16px;
+  color: #666666;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.tape-wrapepr {
+  margin: auto;
+  width: 80%; /* Adjusts width based on screen size */
+  height: 100px;
+  max-width: 600px; /* Maximum width for larger screens */
+  aspect-ratio: 3 / 1; /* Maintains a 3:1 aspect ratio */
+  background-color: #007bff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.tape-coil {
+  width: 15%; /* Circles take 15% of the rectangle's width */
+  max-width: 80px; /* Maximum size for larger screens */
+  aspect-ratio: 1 / 1; /* Ensures the circles remain perfectly round */
+  background-color: #ffffff;
+  border: 3px solid #0056b3;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #0056b3;
+  text-align: center;
+}
+
+.coil-config-wrapper {
+  display: flex;
+  margin: 20px auto;
+}
+
+.square-textbox {
+  width: 30px;
+  max-width: 30px;
+  aspect-ratio: 1 / 1;
+  background-color: #ffffff;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto 20px;
+}

@@ -5,7 +5,6 @@ const BluetoothCommunication = () => {
   const [device, setDevice] = useState(null);
   const [server, setServer] = useState(null);
   const [characteristic, setCharacteristic] = useState(null);
-  const [activeOrder, setActiveOrder] = useState([1, 2, 3 , 4, 5]);
   const [dataToSend, setDataToSend] = useState('');
   const [receivedData, setReceivedData] = useState('');
 
@@ -72,38 +71,9 @@ const BluetoothCommunication = () => {
     }
   };
 
-  const renderTapeCoil = () => {
-    const coils = []
-    for (let i = 0; i < 5; i++) {
-        coils.push(<div className="tape-coil"/>)
-    }
-    return  (<div className="tape-wrapepr">{coils}</div>)
-  }
-
-  const renderConfigCoil = () => {
-    const configs = []
-    for (let i = 0; i < 5; i++) {
-        configs.push(
-            <textarea
-                className="square-textbox"
-                placeholder={activeOrder[i]}
-                value={activeOrder[i]}
-                onChange={(e) => {
-                    let newActiveOrder = [...activeOrder]
-                    newActiveOrder[i] = e.target.value
-                    setActiveOrder(newActiveOrder)
-                }}
-            />
-        )
-    }
-    return  (<div className='coil-config-wrapper'>{configs}</div>)
-  }
-
   return (
     <div className="bluetooth-communication">
       <h1>Bluetooth Communication</h1>
-      {renderTapeCoil()}
-      {renderConfigCoil()}
       <textarea
         className="data-input"
         placeholder="Enter data to send"
