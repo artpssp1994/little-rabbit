@@ -7,7 +7,7 @@ const BluetoothCommunication = () => {
   const [characteristic, setCharacteristic] = useState(null);
   const [activeOrder, setActiveOrder] = useState([1, 2, 3 , 4, 5]);
   const [loopDuration, setloopDuration] = useState(1);
-//   const [dataToSend, setDataToSend] = useState('');
+  const [dataToSend, setDataToSend] = useState('');
   const [receivedData, setReceivedData] = useState('');
 
   const connectToBluetooth = async () => {
@@ -49,13 +49,18 @@ const BluetoothCommunication = () => {
 
   const transFromConfig = () => {
     const textJson = `{"loopDuration": ${loopDuration}, "activeOrder": [${activeOrder}]}`
-    console.log(textJson);
+    setDataToSend(textJson)
+    // console.log(textJson);
     return textJson;
   }
 
   const sendData = async () => {
+
     try {
       const dataToSend = transFromConfig();
+      console.log("dataToSend:" + dataToSend)
+      console.log("characteristic:" + characteristic)
+      console.log("characteristic && dataToSend:" + characteristic && dataToSend)
       if (characteristic && dataToSend) {
         const encoder = new TextEncoder();
         const data = encoder.encode(dataToSend);
