@@ -113,6 +113,7 @@ void loop() {
     // Blink LEDs in the order specified by activeOrder
     for (int i = 0; i < 5; i++) {
       int pinIndex = activeOrder[i] - 1; // Convert 1-based index to 0-based index
+      Serial.println("DEBUG LED PIN: " + ledPins[pinIndex]);
       if (pinIndex >= 0 && pinIndex < 5) {
         digitalWrite(ledPins[pinIndex], HIGH); // Turn on the LED
         delay(ledDuration);                   // Wait for the duration
