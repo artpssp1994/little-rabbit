@@ -11,7 +11,7 @@ bool deviceConnected = false;
 #define CHARACTERISTIC_UUID "87654321-4321-8765-4321-abcdef012345"
 
 // Define LED pins
-const int ledPins[5] = {2, 3, 4, 5, 6}; // Adjust these pins based on your hardware setup
+const int ledPins[5] = {3, 4, 5, 6, 7}; // Adjust these pins based on your hardware setup
 
 // Variables to store configuration
 int loopDuration = 1; // Default loop duration in seconds
