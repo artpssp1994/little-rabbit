@@ -11,7 +11,7 @@ bool deviceConnected = false;
 #define CHARACTERISTIC_UUID "87654321-4321-8765-4321-abcdef012345"
 
 // Define LED pins
-const int ledPins[5] = {1, 2, 3, 4, 5}; // Adjust these pins based on your hardware setup
+const int ledPins[5] = {2, 3, 4, 5, 6}; // Adjust these pins based on your hardware setup
 
 // Variables to store configuration
 int loopDuration = 1; // Default loop duration in seconds
@@ -114,7 +114,7 @@ void loop() {
     for (int i = 0; i < 5; i++) {
       int pinIndex = activeOrder[i] - 1; // Convert 1-based index to 0-based index
       if (pinIndex >= 0 && pinIndex < 5) {
-        Serial.println("DEBUG LED PIN: " + String(ledPins[pinIndex]));
+        // Serial.println("DEBUG LED PIN: " + String(ledPins[pinIndex]));
         digitalWrite(ledPins[pinIndex], HIGH); // Turn on the LED
         delay(ledDuration);                   // Wait for the duration
         digitalWrite(ledPins[pinIndex], LOW); // Turn off the LED
